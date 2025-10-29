@@ -1,0 +1,22 @@
+﻿using _291025_NVE.CQRS.Model;
+using _291025_NVE.DB;
+using Microsoft.AspNetCore.Mvc;
+using MyMediator.Types;
+
+namespace _291025_NVE.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class UsersController(Mediator mediator) : Controller
+    {
+        private readonly Mediator mediator = mediator;
+
+        [HttpPost("register")]
+        public async Task<ActionResult> RegisterUser(UserDTO user)
+        {
+            
+
+            return Ok();
+        }
+    }
+}
