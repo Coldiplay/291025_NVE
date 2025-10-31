@@ -1,4 +1,10 @@
 
+using _291025_NVE.CQRS.Users;
+using _291025_NVE.Validators;
+using _291025_NVE.Validators.Behavior;
+using MyMediator.Interfaces;
+using MyMediator.Types;
+
 namespace _291025_NVE
 {
     public class Program
@@ -13,6 +19,12 @@ namespace _291025_NVE
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
 
+            builder.Services.AddSingleton<IMediator, Mediator>();
+            builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidatorBehavior<,>));
+
+            // Сами валидаторы
+            builder.Services.AddTransient<IValidator<RegisterUserCommand>, RegisterUserCommandValidator>();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -21,6 +33,7 @@ namespace _291025_NVE
                 app.MapOpenApi();
             }
 
+            
             app.UseHttpsRedirection();
 
             app.UseAuthorization();

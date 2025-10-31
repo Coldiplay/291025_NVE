@@ -1,6 +1,5 @@
 ﻿using _291025_NVE.CQRS.Model;
-using _291025_NVE.CQRS.Users;
-using _291025_NVE.DB;
+using _291025_NVE.CQRS.Orders;
 using Microsoft.AspNetCore.Mvc;
 using MyMediator.Types;
 
@@ -8,14 +7,14 @@ namespace _291025_NVE.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController(Mediator mediator) : Controller
+    public class OrdersController(Mediator mediator) : Controller
     {
         private readonly Mediator mediator = mediator;
 
-        [HttpPost("register")]
-        public async Task<ActionResult> RegisterUser(UserDTO user)
+        [HttpPost("new")]
+        public async Task<ActionResult> AddNewOrder(OrderToAddDTO order)
         {
-            var command = new RegisterUserCommand(user);
+            var command = new AddNewOrderCommand(order);
             await mediator.SendAsync(command);
             return Ok();
         }

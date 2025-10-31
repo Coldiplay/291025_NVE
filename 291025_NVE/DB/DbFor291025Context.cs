@@ -53,6 +53,10 @@ public partial class DbFor291025Context : DbContext
             entity.Property(e => e.Description)
                 .HasMaxLength(100)
                 .HasColumnName("description");
+            entity.Property(e => e.StockQuantity)
+                .HasDefaultValueSql("'1'")
+                .HasColumnType("int(11)")
+                .HasColumnName("stock_quantity");
             entity.Property(e => e.Title)
                 .HasMaxLength(100)
                 .HasColumnName("title");

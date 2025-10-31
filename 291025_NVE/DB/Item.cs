@@ -13,5 +13,7 @@ public partial class Item
 
     public string? Description { get; set; }
 
+    public int StockQuantity { get; set; }
+
     public virtual ICollection<ItemsToOrder> ItemsToOrders { get; set; } = new List<ItemsToOrder>();
 }
