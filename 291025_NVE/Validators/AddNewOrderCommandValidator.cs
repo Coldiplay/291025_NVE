@@ -11,6 +11,8 @@ namespace _291025_NVE.Validators
         {
             List<string> errors = [];
             var db = new DbFor291025Context();
+            if (request.order.Items.Count == 0)
+                errors.Add("Нельзя добавить пустой заказ");
 
             foreach (var s in request.order.Items)
             {
@@ -28,11 +30,6 @@ namespace _291025_NVE.Validators
 
             if (await db.Users.AnyAsync(u => u.Id == request.order.User_Id, ct))
                 errors.Add("Нет такого пользователя");
-
-
-
-
-
 
             return errors;
         }

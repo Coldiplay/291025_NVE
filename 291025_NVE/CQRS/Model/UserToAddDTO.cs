@@ -2,7 +2,7 @@
 
 namespace _291025_NVE.CQRS.Model
 {
-    public partial class UserDTO
+    public partial class UserToAddDTO
     {
         public string? Email { get; set; }
         public string? Password { get; set; }
@@ -17,12 +17,11 @@ namespace _291025_NVE.CQRS.Model
 
         public string? Info { get; set; }
 
-        public int Id { get; set; }
+        public int? Id { get; set; }
 
-        public static explicit operator User(UserDTO user) =>
+        public static explicit operator User(UserToAddDTO user) =>
             new User
             {
-                Id = user.Id,
                 Info = user.Info,
                 Phone = user.Phone,
                 DateOfBirth = user.DateOfBirth,
@@ -31,8 +30,8 @@ namespace _291025_NVE.CQRS.Model
                 Email = user.Email,
                 Password = string.IsNullOrEmpty(user.Password) ? throw new Exception("Не задан пароль для пользователя") : user.Password
             };
-        public static explicit operator UserDTO(User user) =>
-            new UserDTO
+        public static explicit operator UserToAddDTO(User user) =>
+            new UserToAddDTO
             {
                 Id = user.Id,
                 Info = user.Info,

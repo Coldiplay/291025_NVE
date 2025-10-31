@@ -13,7 +13,7 @@ namespace _291025_NVE.Controllers
         private readonly Mediator mediator = mediator;
 
         [HttpPost("register")]
-        public async Task<ActionResult> RegisterUser(UserDTO user)
+        public async Task<ActionResult> RegisterUser(UserToAddDTO user)
         {
             var command = new RegisterUserCommand(user);
             await mediator.SendAsync(command);

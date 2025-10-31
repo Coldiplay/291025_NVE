@@ -6,5 +6,8 @@
         public List<ItemsToOrder_ToAddOrderDTO> Items { get; set; }
         public ShippingAdress_ToAddOrderDTO ShippingAdress { get; set; }
         public int PaymentMethod_Id { get; set; }
+
+        public UserAdditionalInfo UserAdditionalInfo { get; set; }
+
     }
 }

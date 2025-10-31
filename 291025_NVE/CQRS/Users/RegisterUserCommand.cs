@@ -6,9 +6,9 @@ using MyMediator.Types;
 
 namespace _291025_NVE.CQRS.Users
 {
-    public class RegisterUserCommand(UserDTO user) : IRequest
+    public class RegisterUserCommand(UserToAddDTO user) : AdditionInfoUser, IRequest
     {
-        public readonly UserDTO user = user;
+        public readonly UserToAddDTO user = user;
 
         public class RegisterUserCommandHandler(DbFor291025Context db) : IRequestHandler<RegisterUserCommand, Unit>
         {

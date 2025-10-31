@@ -6,7 +6,7 @@ using MyMediator.Types;
 
 namespace _291025_NVE.CQRS.Orders
 {
-    public class AddNewOrderCommand(OrderToAddDTO order) : IRequest
+    public class AddNewOrderCommand(OrderToAddDTO order) : AdditionInfoUser, IRequest
     {
         public readonly OrderToAddDTO order = order;
 
@@ -14,7 +14,7 @@ namespace _291025_NVE.CQRS.Orders
         {
             public async Task<Unit> HandleAsync(AddNewOrderCommand request, CancellationToken ct = default)
             {
-                var Order = new Order
+                var order = new Order
                 {
                     UserId = request.order.User_Id,
                     PaymentMethodId = request.order.PaymentMethod_Id,
@@ -23,20 +23,26 @@ namespace _291025_NVE.CQRS.Orders
                 var shipping_adress = await db.ShippingAdresses.FirstOrDefaultAsync(a => a.House == ship_adress_dto.House 
                 && a.City == ship_adress_dto.City
                 && a.PostalCode == ship_adress_dto.PostalCode
-                && a.Street == ship_adress_dto.Street);
+                && a.Street == ship_adress_dto.Street, ct);
                 if (shipping_adress is null)
                 {
                     shipping_adress = (ShippingAdress)ship_adress_dto;
                     var res = await db.ShippingAdresses.AddAsync(shipping_adress);
-                    Order.ShippingAdressId = res.Entity.Id;
+                    order.ShippingAdressId = res.Entity.Id;
+                }
+                else
+                    order.ShippingAdressId = shipping_adress.Id;
+
+                var orderInDB = db.Orders.Add(order);
+
+                foreach (var r in request.order.Items)
+                {
+                    db.ItemsToOrders.Add(new ItemsToOrder { ItemCount = r.ItemCount, ItemId = r.ItemId, OrderId = orderInDB.Entity.Id});
                 }
 
-                // Не доделано
-
+                await db.SaveChangesAsync(ct);
 
                 return Unit.Value;
-                
-
             }
         }
     }
