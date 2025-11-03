@@ -16,7 +16,7 @@ namespace _291025_NVE.Controllers
         [HttpPost("register")]
         public async Task<ActionResult> RegisterUser(UserToAddDTO user)
         {
-            var command = new RegisterUserCommand(user);
+            var command = new RegisterUserCommand() { User = user};
             await mediator.SendAsync(command);
             return Ok();
         }

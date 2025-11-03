@@ -1,4 +1,5 @@
 
+using _291025_NVE.CQRS.Orders;
 using _291025_NVE.CQRS.Users;
 using _291025_NVE.Validators;
 using _291025_NVE.Validators.Behavior;
@@ -7,6 +8,7 @@ using MyMediator.Interfaces;
 using MyMediator.Types;
 using Scalar.AspNetCore;
 using System.Reflection;
+using System.Text.Json;
 
 namespace _291025_NVE
 {
@@ -17,19 +19,28 @@ namespace _291025_NVE
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-
+            builder.Services.AddMediatorHandlers(Assembly.GetExecutingAssembly());
             builder.Services.AddControllers();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
 
+            //var s = JsonSerializer.SerializeToElement(new DateOnly(2025, 1, 2));
+
+
+            //Медиатор
             builder.Services.AddSingleton<IMediator, Mediator>();
+
+            // Http context
             builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+            // Регистрация Валидатора
             builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidatorBehavior<,>));
             //builder.Services.AddScoped<Mediator>();
             //builder.Services.AddMediatorHandlers(Assembly.GetExecutingAssembly());
 
             // Сами валидаторы
             builder.Services.AddTransient<IValidator<RegisterUserCommand>, RegisterUserCommandValidator>();
+            builder.Services.AddTransient<IValidator<AddNewOrderCommand>, AddNewOrderCommandValidator>();
 
             var app = builder.Build();
 

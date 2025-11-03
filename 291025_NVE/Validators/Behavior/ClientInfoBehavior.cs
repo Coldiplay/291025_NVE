@@ -14,10 +14,7 @@ namespace _291025_NVE.Validators.Behavior
             UserAdditionalInfo info = new(ipAddress, userAgent);
 
             var prop = typeof(TRequest).GetProperty("UserAdditionalInfo");
-            if (prop != null)
-            {
-                prop.SetValue(request, info);
-            }
+            prop?.SetValue(request, info);
             return await next();
         }
     }

@@ -6,18 +6,18 @@ using MyMediator.Types;
 
 namespace _291025_NVE.CQRS.Users
 {
-    public class RegisterUserCommand(UserToAddDTO user) : AdditionInfoUser, IRequest
+    public class RegisterUserCommand : AdditionInfoUser, IRequest<Unit>
     {
-        public readonly UserToAddDTO user = user;
+        public UserToAddDTO User { get; set; }
 
         public class RegisterUserCommandHandler(DbFor291025Context db) : IRequestHandler<RegisterUserCommand, Unit>
         {
             public async Task<Unit> HandleAsync(RegisterUserCommand request, CancellationToken ct = default)
             {
-                if (await db.Users.AnyAsync(u => u.Id == request.user.Id))
+                if (await db.Users.AnyAsync(u => u.Id == request.User.Id))
                     throw new Exception();
 
-                db.Users.Add((User)request.user);
+                db.Users.Add((User)request.User);
                 await db.SaveChangesAsync();
                 return Unit.Value;
             }
