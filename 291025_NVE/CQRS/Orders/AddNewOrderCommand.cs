@@ -6,7 +6,7 @@ using MyMediator.Types;
 
 namespace _291025_NVE.CQRS.Orders
 {
-    public class AddNewOrderCommand(OrderToAddDTO order) : AdditionInfoUser, IRequest<Unit>
+    public class AddNewOrderCommand(OrderToAddDTO order) : AdditionInfoUser, IRequest
     {
         public readonly OrderToAddDTO order = order;
 

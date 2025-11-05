@@ -1,6 +1,7 @@
 
 using _291025_NVE.CQRS.Orders;
 using _291025_NVE.CQRS.Users;
+using _291025_NVE.DB;
 using _291025_NVE.Validators;
 using _291025_NVE.Validators.Behavior;
 using MyMediator.Extension;
@@ -19,7 +20,6 @@ namespace _291025_NVE
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-            builder.Services.AddMediatorHandlers(Assembly.GetExecutingAssembly());
             builder.Services.AddControllers();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
@@ -29,12 +29,16 @@ namespace _291025_NVE
 
             //Медиатор
             builder.Services.AddSingleton<IMediator, Mediator>();
+            builder.Services.AddDbContext<DbFor291025Context>();
 
             // Http context
             builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
+            builder.Services.AddMediatorHandlers(Assembly.GetExecutingAssembly());
+
             // Регистрация Валидатора
             builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidatorBehavior<,>));
+            //builder.Services.AddScoped<DbFor291025Context>();
             //builder.Services.AddScoped<Mediator>();
             //builder.Services.AddMediatorHandlers(Assembly.GetExecutingAssembly());
 
